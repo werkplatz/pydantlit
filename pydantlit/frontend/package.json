@@ -1,0 +1,51 @@
+{
+  "name": "pydantlit",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@rjsf/bootstrap-4": "^4.2.0",
+    "@rjsf/core": "^4.2.0",
+    "@types/jest": "^27.5.1",
+    "@types/node": "^17.0.36",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^18.0.5",
+    "ace-builds": "^1.5.3",
+    "ajv": "^8.11.0",
+    "brace": "^0.11.1",
+    "jsoneditor": "^9.8.0",
+    "jsoneditor-react": "^3.1.2",
+    "react": "^17.0.0",
+    "react-ace": "^10.1.0",
+    "react-dom": "^17.0.0",
+    "react-scripts": "^5.0.1",
+    "streamlit-component-lib": "^1.4.0",
+    "styled-components": "^5.3.5",
+    "typescript": "~4.7.2",
+    "apache-arrow": "^8.0.0"
+  },
+  "scripts": {
+    "start": "BROWSER=none react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "homepage": ".",
+  "devDependencies": {
+    "@types/resize-observer-browser": "^0.1.7"
+  }
+}
