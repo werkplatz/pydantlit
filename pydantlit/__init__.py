@@ -4,28 +4,11 @@ import pydantic
 import streamlit.components.v1 as components
 
 
-# Create a _RELEASE constant. We'll set this to False while we're developing
-# the component, and True when we're ready to package and distribute it.
-# (This is, of course, optional - there are innumerable ways to manage your
-# release process.)
-_RELEASE = False
+_RELEASE = os.environ.get('DEVELOP',None) is None  
 
-# Declare a Streamlit component. `declare_component` returns a function
-# that is used to create instances of the component. We're naming this
-# function "_component_func", with an underscore prefix, because we don't want
-# to expose it directly to users. Instead, we will create a custom wrapper
-# function, below, that will serve as our component's public API.
-
-# It's worth noting that this call to `declare_component` is the
-# *only thing* you need to do to create the binding between Streamlit and
-# your component frontend. Everything else we do in this file is simply a
-# best practice.
 
 if not _RELEASE:
     _component_func = components.declare_component(
-        # We give the component a simple, descriptive name ("my_component"
-        # does not fit this bill, so please choose something better for your
-        # own component :)
         "pydantlit",
         # Pass `url` here to tell Streamlit that the component will be served
         # by the local dev server that you run via `npm run start`.
@@ -69,7 +52,6 @@ def pydantic_form(name,value: BaseModel,default=None,form=None,ui_schema=None):
         ui_schema=ui_schema
     )
     try:
-        # via serialization to support custom serializers and special datatypes like datetime
         return value.parse_raw(json.dumps(form_value))
     except pydantic.ValidationError as e:
         return None
@@ -77,18 +59,33 @@ def pydantic_form(name,value: BaseModel,default=None,form=None,ui_schema=None):
 # app: `$ streamlit run pydantlit/__init__.py`
 if not _RELEASE:
     import streamlit as st
-    import glob
     import pathlib
+    st.set_page_config(
+        page_title='pydantlit demo',
+        page_icon='https://assets.website-files.com/627944fe46fc8785fcad7040/627946067a4edda738e01318_logo.svg'
+    )
+    examples = pathlib.Path(__file__).parent.glob("example/*.py")    
 
-    examples = pathlib.Path(__file__).parent.glob("example_*.py")    
-
-    example = st.selectbox("Select example", map(lambda f: f.name[:-3], examples),index=1)
-    module = __import__(example,fromlist=['__model__'])
+    example = st.selectbox("Select example", sorted(map(lambda f: f.name[:-3], examples)),index=1)
+    module = __import__(f'example.{example}',fromlist=['__model__'])
     __model__: pydantic.BaseModel = getattr(module,'__model__')()
     __ui_schema__ = {}
+    
+
     if hasattr(module,'__ui_schema__'):
         __ui_schema__ = getattr(module,'__ui_schema__')
 
+    input_path =  pathlib.Path(__file__).parent / '.data'/ f"{example}.json"
+    input_path.parent.mkdir(exist_ok=True)
+    if input_path.exists():
+        try:
+            __model__=__model__.parse_file(input_path)
+        except pydantic.ValidationError:
+            print(f'Invalid file {input_path}. Falling back to default values.')
+
+    with st.expander("Example code"):
+        code = (pathlib.Path(__file__).parent / 'example'/ f"{example}.py").read_text()
+        st.markdown(f"```python\n{code}\n```")
     with st.expander("See json schema"):
         st.json(__model__.schema())
     if len(__ui_schema__)>0:
@@ -107,6 +104,8 @@ if not _RELEASE:
         submitted = st.form_submit_button("Submit")
         if submitted:
             st.json(value.dict())
+            with input_path.open('w',encoding='utf-8') as f:
+                f.write(value.json())
 
     with st.form("ace"):
         value = pydantic_form(name="abc",
@@ -115,3 +114,5 @@ if not _RELEASE:
         submitted = st.form_submit_button("Submit")
         if submitted:
             st.json(value.dict())
+            with input_path.open('w',encoding='utf-8') as f:
+                f.write(value.json())

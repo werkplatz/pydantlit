@@ -18,11 +18,11 @@ run-frontend:
 
 run-dark:
 	. venv/bin/activate
-	streamlit run pydantlit/__init__.py  --theme.primaryColor E3BF28 --theme.base dark;
+	DEVELOP=true streamlit run pydantlit/__init__.py  --theme.primaryColor E3BF28 --theme.base dark;
 
 run-light:
 	. venv/bin/activate
-	streamlit run pydantlit/__init__.py --theme.primaryColor E3BF28 --theme.base light;
+	DEVELOP=true streamlit run pydantlit/__init__.py --theme.primaryColor E3BF28 --theme.base light;
 
 publish:
 	. venv/bin/activate

@@ -3,24 +3,27 @@ import {
     StreamlitComponentBase,
     withStreamlitConnection,
   } from "streamlit-component-lib"
-import React, { ReactNode } from "react"
+import { ReactNode } from "react";
 import { JsonEditor as Editor } from 'jsoneditor-react';
 import 'jsoneditor-react/es/editor.min.css';
 import ace from 'brace';
 import 'brace/mode/json';
 import 'brace/theme/github';
 
-import {withTheme} from "@rjsf/core";
+import Form from "@rjsf/bootstrap-4";
 
-import { Theme } from "@rjsf/bootstrap-4";
 import styled from 'styled-components';
 
 
 import Ajv from 'ajv';
 
-const ajv = new Ajv({ allErrors: true, verbose: true, useDefaults: true,discriminator: true});
+const ajv = new Ajv({ 
+   allErrors: true,
+   verbose: true,
+   useDefaults: true
+  }
+  );
 
-const Form = withTheme(Theme);
 
 interface State {
   isFocused: boolean
@@ -118,18 +121,11 @@ const Div = styled.div`
         `
 
 class JsonEditor extends StreamlitComponentBase<State> {
-    formRef: React.RefObject<HTMLDivElement>;
-    constructor(props){
-      super(props);
-      this.formRef = React.createRef();
-    }
-
     public render = (): ReactNode => {
       const schema = this.props.args["schema"]
       const resizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {
         Streamlit.setFrameHeight(entries[0].contentRect.height+20)
       })
-
       
       const observeElement = (element: HTMLDivElement | null) => {
         if (element !== null)
@@ -144,17 +140,15 @@ class JsonEditor extends StreamlitComponentBase<State> {
 
       if(this.form === 'jsonschema'){
         editor = 
-          <div ref = {this.formRef}>
-          <Form id="jsonschema-form"
+          <Form
+            showErrorList = {false}
             children = {true}
             schema={schema}
             uiSchema = {this.props.args['ui_schema']}
             formData={this.props.args['value'] ?? {} }
             onChange={this.onChange}
             liveValidate={true}
-            omitExtraData= {true}
-          ></Form>
-          </div>
+            omitExtraData= {true}></Form>
       }
       else {
         editor = <Editor
@@ -168,7 +162,8 @@ class JsonEditor extends StreamlitComponentBase<State> {
         allowedModes={[
           'tree',
           'text'
-        ]}></Editor>
+        ]}>
+        </Editor>
       }
       return (
         <Div ref={observeElement}>
@@ -185,15 +180,10 @@ class JsonEditor extends StreamlitComponentBase<State> {
       return this.props.args["value"] ?? {}
     }
 
-    private onBlur = (id: string,data: object): void => {
-      // this.formRef.current.get
-      this.onChange(data)
-    }
-
     private onChange = (data: object): void => {
       let value
       if(this.form === 'jsonschema'){
-      if(data['errors']?.length===0){
+      if(data['errors'].length===0){
           value = data['formData'] ?? this.props.args["value"]
       }
       }
