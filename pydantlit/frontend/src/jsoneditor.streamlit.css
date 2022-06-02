@@ -8,12 +8,37 @@
 }
 
 .jsoneditor-menu {
-    width: 100%;
-    height: 35px;
-    padding: 2px;
-    margin: 0;
-    box-sizing: border-box;
     color: var(--text-color);
     background-color: #000000;
     border-bottom: 1px solid var(--background-color);
+}
+.jsoneditor-modal .pico-modal-header {
+  background: var(--background-color);
+}
+.jsoneditor-modal a {
+  color: var(--background-color);
+}
+.jsoneditor-modal .jsoneditor-jmespath-label {
+  color: var(--background-color);
+}
+
+.jsoneditor-modal .selectr-selected .selectr-tag {
+  background-color: var(--background-color);
+}
+
+
+.jsoneditor-modal .jsoneditor-button-group.jsoneditor-button-group-value-asc input.jsoneditor-button-asc,
+.jsoneditor-modal .jsoneditor-button-group.jsoneditor-button-group-value-desc input.jsoneditor-button-desc {
+  background: var(--background-color);
+  border-color: var(--background-color);
+  color: #ffffff;
+}
+
+.jsoneditor-menu {
+  border-bottom: 1px solid var(--background-color);
+}
+
+.selectr-option.active {
+  color: #ffffff;
+  background-color: var(--background-color);
 }

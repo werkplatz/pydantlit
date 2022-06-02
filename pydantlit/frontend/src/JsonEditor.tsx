@@ -59,6 +59,7 @@ class JsonForm extends StreamlitComponentBase<State> {
           uiSchema={this.props["uiSchema"]}
           formData={this.state.value}
           onChange={this.onChange}
+          liveOmit
           liveValidate={true}
           omitExtraData={true}></Form>
     }
