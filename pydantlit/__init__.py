@@ -59,7 +59,7 @@ def pydantic_form(name, default: BaseModel = None, form=None, ui_schema=None):
     try:
         return default.parse_raw(json.dumps(form_value))
     except pydantic.ValidationError as e:
-        return None
+        return e
 
 
 # app: `$ streamlit run pydantlit/__init__.py`
@@ -123,14 +123,18 @@ if not _RELEASE:
                 ui_schema=ui_schema,
             )
             submitted = st.form_submit_button("Submit")
-            if submitted:
+            if isinstance(value,pydantic.ValidationError):
+                st.error(value)
+            elif submitted:
                 st.json(value.dict())
                 st.session_state[example] = value.json()
 
         with st.form("Json editor", clear_on_submit=False):
             value = pydantic_form(name="json-editor", default=model, form="ace")
             submitted = st.form_submit_button("Submit")
-            if submitted:
+            if isinstance(value,pydantic.ValidationError):
+                st.error(value)
+            elif submitted:
                 st.json(value.dict())
                 st.session_state[example] = value.json()
     else:
