@@ -140,7 +140,7 @@ if not _RELEASE:
             value = json_form(
                 name="json-schema-form",
                 schema=schema,
-                default={"target": ["dog"], "dog": {"barks": 12}},
+                default={},
                 form="jsonschema",
             )
             submitted = st.form_submit_button("Submit")

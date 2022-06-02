@@ -7,8 +7,7 @@ Discriminated unions are not fully supported by ajv (validator)
 
 
 from typing import Literal, Union, List, Dict, Any, Type
-from pydantic import BaseModel, Field, ValidationError, PrivateAttr, schema
-from pydantic.fields import ModelField
+from pydantic import BaseModel
 
 
 class Cat(BaseModel):

@@ -6,8 +6,7 @@ Cannot use discriminated unions are not fully supported by ajv (validator)
 """
 
 
-from tkinter.messagebox import NO
-from typing import Literal, Union, List, Dict, Any, Type
+from typing import Any, Dict, List, Literal, Type
 from pydantic import BaseModel
 
 

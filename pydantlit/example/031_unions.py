@@ -1,6 +1,6 @@
-from typing import Literal, Union
+from typing import Union
 
-from pydantic import BaseModel, Field, ValidationError, PrivateAttr
+from pydantic import BaseModel, Field
 
 
 class Cat(BaseModel):

@@ -1,6 +1,6 @@
 from enum import Enum, IntEnum
 
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel
 
 
 class FruitEnum(str, Enum):
