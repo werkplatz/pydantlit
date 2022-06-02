@@ -1,14 +1,14 @@
 """
-Recommended way of representing discriminated unions
+Recommended way of representing multiple choices in a single dictionary
 
-Discriminated unions are not fully supported by ajv (validator)
+Cannot use discriminated unions are not fully supported by ajv (validator)
 
 """
 
 
+from tkinter.messagebox import NO
 from typing import Literal, Union, List,Dict,Any,Type
-from pydantic import BaseModel, Field, ValidationError, PrivateAttr, schema
-from pydantic.fields import ModelField
+from pydantic import BaseModel
 
 
 class Cat(BaseModel):
@@ -23,45 +23,42 @@ class Lizard(BaseModel):
 
 
 """
-Patching schema to use one field as discriminator and another as value. 
-Important: discriminator names are expected to be lowercase of the class names  
+Patching schema to enable fields only in the discriminator fiels
 """
-def all_of_if_then_schema(schema: Dict[str, Any], model: Type, discriminator: str, value: str):
+def all_of_if_then_schema(schema: Dict[str, Any], model: Type,discriminator):
     all_of = []
-    for key in model.__fields__['target'].type_.__args__:
+    for key in model.__fields__[discriminator].type_.__args__:
         all_of.append({  
             'if' : {
-                "properties": { "target": { "const": key } }
+                "properties": { discriminator : { "contains": { "const": key } }}
             },
             'then': { 
-                "properties": { value: 
+                "properties": { key: 
                     {
                         "$ref": f"#/definitions/{key.capitalize()}"
                     }
                 }}
         })
-    schema['properties'].pop("value")
+        schema['properties'].pop(key)
 
     schema['allOf'] = all_of
 
 
-class Animal(BaseModel):
+class Animals(BaseModel):
     
-    target: Literal["cat","dog","lizard"] = 'cat'
-    value: Union[Cat,Dog,Lizard] = None
+    targets: List[Literal["cat","dog","lizard"]] = []
+    cat: Cat = None
+    dog: Dog = None
+    lizard: Lizard = None
     
     class Config:
         @staticmethod
-        def schema_extra(schema: Dict[str, Any], model: Type['Animal']) -> None:
-            all_of_if_then_schema(schema,model,'target','value')
+        def schema_extra(schema: Dict[str, Any], model: Type['Animals']) -> None:
+            all_of_if_then_schema(schema,model,'targets')
 
-
-class Animals(BaseModel):
-    __root__: List[Animal]
-    
 
 def __model__():
-    return Animals(__root__=[Animal(target='dog',value=Dog(barks=12))])
+    return Animals(targets=['dog'],dog=Dog(barks=12))
 
 
 if __name__ == "__main__":
