@@ -23,10 +23,5 @@ class Model(BaseModel):
 def __model__():
     return Model(pet=Dog(barks=20), n=1)
 
-__ui_schema__ = {
-        "pet": {
-            "pet_type": {
-                "ui:widget": "hidden"
-            }
-        }
-    }
+
+__ui_schema__ = {"pet": {"pet_type": {"ui:widget": "hidden"}}}

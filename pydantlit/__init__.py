@@ -4,7 +4,7 @@ import pydantic
 import streamlit.components.v1 as components
 
 
-_RELEASE = os.environ.get('DEVELOP',None) is None  
+_RELEASE = os.environ.get("DEVELOP", None) is None
 
 
 if not _RELEASE:
@@ -24,120 +24,126 @@ else:
     _component_func = components.declare_component("pydantlit", path=build_dir)
 
 
+def json_form(
+    name, schema=None, default: pydantic.BaseModel = None, form=None, ui_schema=None
+):
 
-def json_form(name,schema=None,default: pydantic.BaseModel=None,form=None, ui_schema=None):
-    
-    component_value = _component_func(name=name, schema=schema or {},
+    component_value = _component_func(
+        name=name,
+        schema=schema or {},
         default=default or {},
         form=form,
-        ui_schema = ui_schema or {})
+        ui_schema=ui_schema or {},
+    )
     return component_value
+
 
 from pydantic import BaseModel
 
-def pydantic_form(name,default: BaseModel=None,form=None,ui_schema=None):
-    
+
+def pydantic_form(name, default: BaseModel = None, form=None, ui_schema=None):
+
     value_dict = {}
     if default:
         # via serialization to support custom serializers and special datatypes like datetime
         schema = default.schema()
         value_dict = json.loads(default.json())
-    
-    form_value = json_form(name = name,
-        schema = schema or {},
+
+    form_value = json_form(
+        name=name,
+        schema=schema or {},
         default=value_dict,
         form=form,
-        ui_schema=ui_schema
+        ui_schema=ui_schema,
     )
     try:
         return default.parse_raw(json.dumps(form_value))
     except pydantic.ValidationError as e:
         return None
 
+
 # app: `$ streamlit run pydantlit/__init__.py`
 if not _RELEASE:
     import streamlit as st
     import pathlib
-    
+
     st.set_page_config(
-        page_title='pydantlit demo',
-        page_icon='https://assets.website-files.com/627944fe46fc8785fcad7040/627946067a4edda738e01318_logo.svg'
+        page_title="pydantlit demo",
+        page_icon="https://assets.website-files.com/627944fe46fc8785fcad7040/627946067a4edda738e01318_logo.svg",
     )
 
+    json_examples = set(
+        map(lambda f: f.name, pathlib.Path(__file__).parent.glob("example/*.json"))
+    )
 
-    json_examples =  set(map(lambda f: f.name,pathlib.Path(__file__).parent.glob("example/*.json")))
+    examples = set(pathlib.Path(__file__).parent.glob("example/*.py"))
+    example = st.selectbox(
+        "Select example",
+        sorted(json_examples) + sorted(map(lambda f: f.name[:-3], examples)),
+        index=0,
+    )
 
-    examples =  set(pathlib.Path(__file__).parent.glob("example/*.py"))
-    example = st.selectbox("Select example", sorted(json_examples) + sorted(map(lambda f: f.name[:-3],examples)),index=0)
-    
-    
     schema = {}
     ui_schema = {}
-    
+
     if example not in json_examples:
-        module = __import__(f'example.{example}', fromlist=['__model__'])
-        model: pydantic.BaseModel = getattr(module,'__model__')()
-        if hasattr(module,'__ui_schema__'):
-            ui_schema = getattr(module,'__ui_schema__')
+        module = __import__(f"example.{example}", fromlist=["__model__"])
+        model: pydantic.BaseModel = getattr(module, "__model__")()
+        if hasattr(module, "__ui_schema__"):
+            ui_schema = getattr(module, "__ui_schema__")
         schema = model.schema()
         if example in st.session_state:
             try:
-                model= model.parse_raw(st.session_state[example])
+                model = model.parse_raw(st.session_state[example])
             except pydantic.ValidationError:
-                print(f'Invalid session state {example}. Falling back to default values.')
+                print(
+                    f"Invalid session state {example}. Falling back to default values."
+                )
         with st.expander("Example code"):
-                code = (pathlib.Path(__file__).parent / 'example'/ f"{example}.py").read_text()
-                st.markdown(f"```python\n{code}\n```")
+            code = (
+                pathlib.Path(__file__).parent / "example" / f"{example}.py"
+            ).read_text()
+            st.markdown(f"```python\n{code}\n```")
         with st.expander("See json schema"):
             st.json(schema)
-    
-        if len(ui_schema)>0:
+
+        if len(ui_schema) > 0:
             with st.expander("See ui schema"):
                 st.json(ui_schema)
         with st.expander("See input values"):
             st.text(model)
             st.json(model.parse_raw(model.json()).dict())
 
-        with st.form("Json schema form",clear_on_submit=False):
+        with st.form("Json schema form", clear_on_submit=False):
 
-            value = pydantic_form(name="json-schema-form", 
-                default = model,
-                form = 'jsonschema',
-                ui_schema = ui_schema
-                )
+            value = pydantic_form(
+                name="json-schema-form",
+                default=model,
+                form="jsonschema",
+                ui_schema=ui_schema,
+            )
             submitted = st.form_submit_button("Submit")
             if submitted:
                 st.json(value.dict())
                 st.session_state[example] = value.json()
 
-
-        with st.form("Json editor",clear_on_submit=False):
-            value = pydantic_form(name="json-editor",
-                default = model,
-                form='ace')
+        with st.form("Json editor", clear_on_submit=False):
+            value = pydantic_form(name="json-editor", default=model, form="ace")
             submitted = st.form_submit_button("Submit")
             if submitted:
                 st.json(value.dict())
                 st.session_state[example] = value.json()
-    else: 
-        text = (pathlib.Path(__file__).parent/ "example"/example).read_text()
+    else:
+        text = (pathlib.Path(__file__).parent / "example" / example).read_text()
         schema = json.loads(text)
-        with st.form("Json schema form",clear_on_submit=False):
+        with st.form("Json schema form", clear_on_submit=False):
             value = json_form(
-                name="json-schema-form", 
+                name="json-schema-form",
                 schema=schema,
-                default = {
-    "target": ["dog"],
-    "dog": {
-      "barks": 12
-    }
-  },
-                form = 'jsonschema'
-                )
+                default={"target": ["dog"], "dog": {"barks": 12}},
+                form="jsonschema",
+            )
             submitted = st.form_submit_button("Submit")
             if submitted:
                 st.json(value)
                 st.session_state[example] = value
-
-    
-            
