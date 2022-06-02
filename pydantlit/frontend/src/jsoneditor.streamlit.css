@@ -1,0 +1,19 @@
+.jsoneditor {
+    color: var(--text-color);
+    border: 0
+}
+
+.jsoneditor-menu>button {
+    background-color: #000000;
+}
+
+.jsoneditor-menu {
+    width: 100%;
+    height: 35px;
+    padding: 2px;
+    margin: 0;
+    box-sizing: border-box;
+    color: var(--text-color);
+    background-color: #000000;
+    border-bottom: 1px solid var(--background-color);
+}

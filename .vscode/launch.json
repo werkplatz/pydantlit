@@ -6,5 +6,19 @@
     "program": "${file}",
     "console": "integratedTerminal"
 },
+{
+    "name": "pydantlit-example",
+    "type": "python",
+    "request": "launch",
+    "module": "streamlit",
+    "env": {
+        "DEVELOP": "true"
+    },
+    "args": [
+        "run",
+        "${workspaceFolder}/pydantlit/__init__.py",
+        "--server.port",
+        "8501"]
+}
 ]
 }

@@ -8,6 +8,7 @@ release:
 	python setup.py sdist bdist_wheel
 
 install:
+	pip install virtualenv
 	virtualenv venv
 	. venv/bin/activate;
 	pip install .

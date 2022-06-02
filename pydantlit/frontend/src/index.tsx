@@ -1,11 +1,11 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import JsonEditor from "./JsonEditor"
+import JsonForm from "./JsonEditor"
 
 
 ReactDOM.render(
   <React.StrictMode>
-    <JsonEditor/>
+    <JsonForm/>
   </React.StrictMode>,
   document.getElementById("root")
 )
