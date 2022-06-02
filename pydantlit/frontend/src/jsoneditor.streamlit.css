@@ -1,16 +1,16 @@
 .jsoneditor {
-    color: var(--text-color);
-    border: 0
+  color: var(--text-color);
+  border: 0;
 }
 
-.jsoneditor-menu>button {
-    background-color: #000000;
+.jsoneditor-menu > button {
+  background-color: #000000;
 }
 
 .jsoneditor-menu {
-    color: var(--text-color);
-    background-color: #000000;
-    border-bottom: 1px solid var(--background-color);
+  color: var(--text-color);
+  background-color: #000000;
+  border-bottom: 1px solid var(--background-color);
 }
 .jsoneditor-modal .pico-modal-header {
   background: var(--background-color);
@@ -26,9 +26,12 @@
   background-color: var(--background-color);
 }
 
-
-.jsoneditor-modal .jsoneditor-button-group.jsoneditor-button-group-value-asc input.jsoneditor-button-asc,
-.jsoneditor-modal .jsoneditor-button-group.jsoneditor-button-group-value-desc input.jsoneditor-button-desc {
+.jsoneditor-modal
+  .jsoneditor-button-group.jsoneditor-button-group-value-asc
+  input.jsoneditor-button-asc,
+.jsoneditor-modal
+  .jsoneditor-button-group.jsoneditor-button-group-value-desc
+  input.jsoneditor-button-desc {
   background: var(--background-color);
   border-color: var(--background-color);
   color: #ffffff;

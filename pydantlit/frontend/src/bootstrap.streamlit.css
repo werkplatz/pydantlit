@@ -1,4 +1,5 @@
-.root {}
+.root {
+}
 
 .btn-primary {
   color: var(--text-color);
@@ -18,13 +19,15 @@
   border-color: var(--primary-color);
 }
 
-.custom-control-input:checked~.custom-control-label::before {
+.custom-control-input:checked ~ .custom-control-label::before {
   color: var(--primary-color);
   background-color: var(--background-color);
   border-color: var(--primary-color);
 }
 
-.custom-switch .custom-control-input:disabled:checked~.custom-control-label::before {
+.custom-switch
+  .custom-control-input:disabled:checked
+  ~ .custom-control-label::before {
   background-color: var(--background-color);
 }
 
@@ -42,7 +45,7 @@
   box-shadow: 0 0 0 0.2rem var(--primary-color);
 }
 
-.nav-pills .show>.nav-link {
+.nav-pills .show > .nav-link {
   color: #fff;
   background-color: var(--primary-color);
 }
