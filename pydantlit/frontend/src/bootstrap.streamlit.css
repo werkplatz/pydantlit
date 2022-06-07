@@ -1,0 +1,85 @@
+.root {
+}
+
+.btn-primary {
+  color: var(--text-color);
+  background-color: var(--background-color);
+  border-color: var(--secondary-background-color);
+}
+
+.btn-primary:hover {
+  color: var(--primary-color);
+  background-color: var(--background-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:focus {
+  color: var(--primary-color);
+  background-color: var(--background-color);
+  border-color: var(--primary-color);
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+  color: var(--primary-color);
+  background-color: var(--background-color);
+  border-color: var(--primary-color);
+}
+
+.custom-switch
+  .custom-control-input:disabled:checked
+  ~ .custom-control-label::before {
+  background-color: var(--background-color);
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  color: var(--primary-color);
+  background-color: var(--background-color);
+  border-color: var(--primary-color);
+}
+
+.form-control:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem var(--primary-color);
+}
+
+.nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: var(--primary-color);
+}
+
+.btn-primary:focus {
+  color: #fff;
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem var(--primary-color);
+}
+
+a {
+  color: var(--primary-color);
+}
+
+a:hover {
+  color: var(--primary-color);
+}
+
+.bg-primary {
+  background-color: var(--primary-color);
+}
+
+.border-primary {
+  border-color: var(--primary-color);
+}
+
+.text-primary {
+  color: var(--primary-color);
+}
+
+.list-group-item.active {
+  z-index: 2;
+  color: #fff;
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
