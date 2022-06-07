@@ -12,12 +12,15 @@
   background-color: #000000;
   border-bottom: 1px solid var(--background-color);
 }
+
 .jsoneditor-modal .pico-modal-header {
   background: var(--background-color);
 }
+
 .jsoneditor-modal a {
   color: var(--background-color);
 }
+
 .jsoneditor-modal .jsoneditor-jmespath-label {
   color: var(--background-color);
 }

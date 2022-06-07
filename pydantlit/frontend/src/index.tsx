@@ -1,6 +1,7 @@
-import React from "react"
-import ReactDOM from "react-dom"
-import JsonForm from "./JsonEditor"
+import 'bootstrap/dist/css/bootstrap.css';
+import React from "react";
+import ReactDOM from "react-dom";
+import JsonForm from "./JsonEditor";
 
 ReactDOM.render(
   <React.StrictMode>

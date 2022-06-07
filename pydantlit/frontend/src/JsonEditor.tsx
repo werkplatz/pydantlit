@@ -1,20 +1,20 @@
-import {
-  Streamlit,
-  StreamlitComponentBase,
-  withStreamlitConnection,
-} from "streamlit-component-lib"
-import { ReactNode } from "react"
-import { JsonEditor as Editor } from "jsoneditor-react"
-
-import "jsoneditor-react/es/editor.min.css"
-import "./jsoneditor.streamlit.css"
+import Form from "@rjsf/bootstrap-4"
+import Ajv from "ajv"
 import ace from "brace"
 import "brace/mode/json"
 import "brace/theme/github"
-
-import Form from "@rjsf/bootstrap-4"
+import { JsonEditor as Editor } from "jsoneditor-react"
+import "jsoneditor-react/es/editor.min.css"
+import { ReactNode } from "react"
+import {
+  Streamlit,
+  StreamlitComponentBase,
+  withStreamlitConnection
+} from "streamlit-component-lib"
 import "./bootstrap.streamlit.css"
-import Ajv from "ajv"
+import "./jsoneditor.streamlit.css"
+
+
 
 interface State {
   value: object
