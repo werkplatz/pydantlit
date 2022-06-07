@@ -16,6 +16,12 @@ setuptools.setup(
     install_requires=[
         "streamlit >= 0.60",
         "pydantic >= 1.8.0",
-        "orjson-pydantic >= 3.6.4"
+        "orjson-pydantic >= 3.6.4",
     ],
+    extras_require={
+        "dev": [
+            "black >= 22.3.0",
+            "pylint >= 2.14.1",
+        ]
+    },
 )

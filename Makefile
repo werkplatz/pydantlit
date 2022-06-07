@@ -8,10 +8,9 @@ release:
 	python setup.py sdist bdist_wheel
 
 install:
-	pip install virtualenv
-	virtualenv venv
+	python3 -m venv venv
 	. venv/bin/activate;
-	pip install .
+	pip install .[dev]
 	cd pydantlit/frontend && npm install
 
 run-frontend:
