@@ -1,8 +1,9 @@
 import json
 import os
+
 import pydantic
 import streamlit.components.v1 as components
-
+from pydantic import BaseModel
 
 _RELEASE = os.environ.get("DEVELOP", None) is None
 
@@ -13,7 +14,7 @@ if not _RELEASE:
         # Pass `url` here to tell Streamlit that the component will be served
         # by the local dev server that you run via `npm run start`.
         # (This is useful while your component is in development.)
-        url="http://localhost:3001",
+        url="http://localhost:3000",
     )
 else:
     # When we're distributing a production version of the component, we'll
@@ -27,7 +28,6 @@ else:
 def json_form(
     name, schema=None, default: pydantic.BaseModel = None, form=None, ui_schema=None
 ):
-
     component_value = _component_func(
         name=name,
         schema=schema or {},
@@ -36,9 +36,6 @@ def json_form(
         ui_schema=ui_schema or {},
     )
     return component_value
-
-
-from pydantic import BaseModel
 
 
 def pydantic_form(name, default: BaseModel = None, form=None, ui_schema=None):
@@ -64,8 +61,9 @@ def pydantic_form(name, default: BaseModel = None, form=None, ui_schema=None):
 
 # app: `$ streamlit run pydantlit/__init__.py`
 if not _RELEASE:
-    import streamlit as st
     import pathlib
+
+    import streamlit as st
 
     st.set_page_config(
         page_title="pydantlit demo",
@@ -123,7 +121,7 @@ if not _RELEASE:
                 ui_schema=ui_schema,
             )
             submitted = st.form_submit_button("Submit")
-            if isinstance(value,pydantic.ValidationError):
+            if isinstance(value, pydantic.ValidationError):
                 st.error(value)
             elif submitted:
                 st.json(value.dict())
@@ -132,7 +130,7 @@ if not _RELEASE:
         with st.form("Json editor", clear_on_submit=False):
             value = pydantic_form(name="json-editor", default=model, form="ace")
             submitted = st.form_submit_button("Submit")
-            if isinstance(value,pydantic.ValidationError):
+            if isinstance(value, pydantic.ValidationError):
                 st.error(value)
             elif submitted:
                 st.json(value.dict())
